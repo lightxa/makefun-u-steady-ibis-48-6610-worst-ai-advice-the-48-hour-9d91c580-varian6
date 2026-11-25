@@ -1,18 +1,17 @@
-"""Worst AI advice, variant 6: confident troubleshooting help that turns
-catastrophic in its closing words.
+"""Worst AI advice, variant 6: a confident fix that breaks the brakes.
 
-The entry is one tidy AI-voice instruction: spray WD-40 on squeaky
+The entry is a single tidy AI-voice instruction: spray WD-40 on squeaky
 brake discs. The badness is specific enough to follow, funny on first
-read, and regrettable the moment it is acted on. The reassurance in
-the second half, that silence "means the brakes are fixed", is the
-punchline: the brakes are silent because they no longer grip at all.
+read, and regrettable the moment it is acted on. The reassurance in the
+second half, that silence "means the brakes are fixed", is the punchline:
+the brakes are silent because they no longer grip at all.
 
-How the entry is aimed at the judge's criteria:
+Why this entry aims at the judge's criteria:
 1. Worstness: the advice destroys the very thing it claims to fix.
    Lubricated discs cannot stop the car.
 2. Funniness: the joke lands immediately, carried by the calm,
    helpful tone rather than by exaggeration.
-3. Tightness: a single line, a single incident, no wasted words.
+3. Tightness: one line, one incident, no wasted words.
 4. AI voice: a confident troubleshooting answer, the kind of tidy
    reply a helpful assistant gives to an everyday car problem.
 5. Concreteness: a real situation (squeaky brakes) and a real action
@@ -62,12 +61,16 @@ def _check_single_line(text: str) -> None:
         raise ValueError("entry must be a single line")
 
 
+# The gate, in the order it is applied: each rule either passes or
+# raises, so a bad entry fails loudly instead of landing on disk.
+RULES = (_check_not_empty, _check_length, _check_single_line)
+
+
 def _validate(text: str) -> str:
-    """Run the whole gate on the normalized text and return it."""
+    """Normalize the text, run every gate rule, and return it."""
     checked = _normalize(text)
-    _check_not_empty(checked)
-    _check_length(checked)
-    _check_single_line(checked)
+    for rule in RULES:
+        rule(checked)
     return checked
 
 
